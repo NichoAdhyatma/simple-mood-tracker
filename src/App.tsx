@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { format, isToday, isPast, addDays } from 'date-fns';
+import { format, isToday, isPast } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MoodForm } from './components/MoodForm';
 import { MoodCard } from './components/MoodCard';
@@ -11,7 +11,7 @@ import { type Mood } from './types';
 function App() {
   const [moods, setMoods] = useState<Mood[]>(() => {
     const saved = localStorage.getItem('moods');
-    return saved ? JSON.parse(saved).map((mood: any) => ({
+    return saved ? JSON.parse(saved).map((mood: Mood) => ({
       ...mood,
       date: new Date(mood.date)
     })) : [];
@@ -36,7 +36,7 @@ function App() {
   };
 
   const isDateSelectable = (date: Date) => {
-    return isToday(date) || (isPast(date) && date >= addDays(new Date(), -2));
+    return isToday(date) || (isPast(date));
   };
 
   return (
